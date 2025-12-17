@@ -19,7 +19,6 @@ def sample_problematic_lines(file_path: Path, n_lines=10) -> None:
     print(
         f"\n--- MUESTRA DE LAS PRIMERAS {n_lines} LÍNEAS PARA INSPECCIÓN ({file_path.name}) ---")
     try:
-        # Uso de'latin1'
         with open(file_path, 'rb') as f_bin:
             f = io.TextIOWrapper(f_bin, encoding='latin1', newline='')
             for i in range(n_lines):
@@ -39,19 +38,18 @@ def extract_from_file(table_name: str, root_path: Path, limit: Optional[int] = N
     if not file_path:
         raise FileNotFoundError(
             f"No se encontró el archivo para '{table_name}'.")
+
     # --- 1. Determinación de Columnas a Leer
-    columns_to_read: Optional[List[str]] = None
     columns_to_exclude = set(COLUMNS_TO_EXCLUDE.get(table_name, []))
-    all_columns: List[str] = []
 
-    # === LÓGICA DE CORRECCIÓN DELIMITADOR ===
+    # Delimitador
     delimiter = ',' if file_path.suffix == '.csv' else '|'
-
     if table_name == 'MVCARATULAS':
         delimiter = '|'
-    # =======================================
+
     if table_name in TABLES_REQUIRING_MANUAL_HEADER:
         try:
+            # Lee el archivo como binario
             with open(file_path, 'rb') as f_bin:
                 f = io.TextIOWrapper(f_bin, encoding='latin1', newline='')
                 header_line = f.readline().strip()
@@ -112,8 +110,6 @@ def extract_from_file(table_name: str, root_path: Path, limit: Optional[int] = N
     print(f"Datos extraídos: {df.shape[0]} filas, {df.shape[1]} columnas.")
     return df
 
-# extract_with_manual_clean --------------------------------------------
-
 
 def extract_with_manual_clean(table_name: str, file_path: Path, n_rows_limit: Optional[int] = None, all_columns: list = None) -> pl.DataFrame:
     '''Limpieza manual'''
@@ -121,22 +117,18 @@ def extract_with_manual_clean(table_name: str, file_path: Path, n_rows_limit: Op
     clean_lines = []
     anomaly_log = []
     columns_to_exclude = set(COLUMNS_TO_EXCLUDE.get(table_name, []))
-
     # Ruta de la carpeta 'anomalies' para los logs
     current_dir = Path(__file__).resolve().parent
     ANOMALIES_DIR = current_dir.parent / 'anomalies'
 
-    # 1. Determinar el delimitador
+    # 1. Delimitador
     delimiter = '|'
-
     try:
         # --- LECTURA BINARIA ROBUSTA PARA EVITAR ERRORES DE ENCODING ---
         with open(file_path, 'rb') as f_bin:
             f = io.TextIOWrapper(f_bin, encoding='latin1', newline='')
-
             reader = csv.reader(f, delimiter=delimiter, quotechar='"')
             # --- FIN LECTURA ROBUSTA ---
-
             # 1. Procesar encabezado
             if not all_columns:
                 header = next(reader)

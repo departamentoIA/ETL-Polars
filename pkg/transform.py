@@ -7,15 +7,11 @@ COLUMNS_TO_DROP: Dict[str, List[str]] = {
     'CTOFICINAS': ['LLPROCESO'],
 }
 
-# Transformaciones de Tipo de Dato o Limpieza Específica
-
 
 def transform_ctoficinas(df: pl.DataFrame) -> pl.DataFrame:
     """Aplica transformaciones a la tabla CTOFICINAS."""
     print("  -> Limpiando CTOFICINAS...")
-
     df = df.drop(COLUMNS_TO_DROP.get('CTOFICINAS', []))
-
     df = df.with_columns(
         [
             pl.col(c).cast(pl.Utf8).fill_null("").alias(c)
@@ -45,10 +41,7 @@ def transform_ctoficinas(df: pl.DataFrame) -> pl.DataFrame:
 def transform_cfvariables(df: pl.DataFrame) -> pl.DataFrame:
     """Aplica transformaciones a la tabla CFVARIABLES."""
     print("  -> Limpiando CFVARIABLES...")
-
-    # 1. Descarte de columna 100% nula
     df = df.drop(COLUMNS_TO_DROP.get('CFVARIABLES', []))
-
     print(f"  -> CFVARIABLES: Filas {df.shape[0]}, Columnas {df.shape[1]}")
     return df
 
@@ -56,7 +49,6 @@ def transform_cfvariables(df: pl.DataFrame) -> pl.DataFrame:
 def transform_ctsocios(df: pl.DataFrame) -> pl.DataFrame:
     """Aplica transformaciones a la tabla CTSOCIOS."""
     print("  -> Limpiando CTSOCIOS...")
-
     df = df.with_columns(
         pl.col("FCCONSTITUCION").str.to_date(
             format="%d/%m/%Y %H:%M:%S", strict=False).alias("FCCONSTITUCION"),
@@ -89,10 +81,6 @@ def transform_default(df: pl.DataFrame, table_name: str) -> pl.DataFrame:
         ]
     )
     return df
-
-# ==============================================================================
-# MAPEO DE FUNCIONES
-# ==============================================================================
 
 
 # Mapeo de la tabla a la función de transformación
