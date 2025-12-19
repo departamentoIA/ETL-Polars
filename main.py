@@ -17,7 +17,7 @@ def main():
             df_trans = transform(df)
             df_sample = df_trans.sample(100, seed=42)
             try:
-                df_sample.write_excel(f'{table_name}_trans.xlsx')
+                df_sample.write_excel(f'{table_name}_clean.xlsx')
             except:
                 print("\n\nNo puedo escribir en el excel si está abierto!")
 
