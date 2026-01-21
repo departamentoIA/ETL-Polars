@@ -38,8 +38,8 @@ def parse_datetime_columns(df: pl.DataFrame, columns: Iterable[str],
     )
 
 
-def to_uppercase_col(df: pl.DataFrame, columns: Iterable[str]) -> pl.DataFrame:
-    """Convert to uppercase."""
+def to_cleaned_str(df: pl.DataFrame, columns: Iterable[str]) -> pl.DataFrame:
+    """Convert to string, clean data and convert to uppercase."""
     return df.with_columns(
         [
             pl.col(col).str.strip_chars().str.to_uppercase().alias(col)
@@ -55,7 +55,7 @@ def transform(df: pl.DataFrame) -> pl.DataFrame:
     df = cast_columns(df, col_int32, pl.Int32)
     df = cast_columns(df, col_int8, pl.Int8)
     df = parse_datetime_columns(df, col_date)
-    df = to_uppercase_col(df, col_uppercase)
+    df = to_cleaned_str(df, col_str)
     print(f"DataFrame con {df.shape[0]} filas y {df.shape[1]} columnas")
     print(df.schema)
     return df
