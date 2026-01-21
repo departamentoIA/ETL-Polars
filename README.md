@@ -1,15 +1,14 @@
 # ETL-Polars
-ETL process with Polars.
+ETL process with Polars. DataFrames (tables) are obtain from csv files.
 
 ## 🌎 Repository Structure
 ```
 ETL-Polars/
-│
 ├── main.py
 ├── .gitignore
-├── env/                # Virtual enviroment
+├── env/                # Virtual enviroment (not provided)
 └── requirements.txt
-└── pkg                 # Contains all nedded files
+└── pkg                 # Contains all needed files (Python package)
     └── __init__.py     # Specifies that folder 'pkg' is a Python package
     └── extract.py      # Contains all functions related to extraction process
     └── transform.py    # Contains all functions related to transform process
@@ -20,7 +19,7 @@ ETL-Polars/
 
 ## ✨ Details
 
-**main.py**
+**main.py:** This script calls 'extract.py' to obtain the DataFrames corresponding to the tables, then 'transform.py' script is called to clean data and to convert the columns into the correct format.
 
 ## 🚀 How to run locally
 1. Clone this repository:
