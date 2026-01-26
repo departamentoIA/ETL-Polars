@@ -24,15 +24,13 @@ def main():
             except:
                 print("\n\nNo puedo escribir en el excel si está abierto!")
 
-            # 3. Carga (L) - L1 (Parquet) y L2 (SQL Server)
-            # apply_loading(table_name, df)
-
-            # 4. Análisis Exploratorio de Datos (EDA)
-            # analyze_data_quality(df, table_name, REPORTS_DIR)
+            # 3. Load to SQL Server (L)
+            df = df.head(10)
+            index_load_table(df, f'{table_name}_clean')
 
         except Exception as e:
             print(
-                f" ❌ FALLO CRÍTICO en el Pipeline para {table_name}. Mensaje:")
+                f"\n❌ FALLO CRÍTICO para {table_name}. Mensaje:\n")
             print(f"'{e}'")
             print("=" * 25)
 
