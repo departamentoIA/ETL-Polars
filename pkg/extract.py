@@ -21,7 +21,7 @@ def extract_from_file(table_name: str, root_path: Path) -> pl.DataFrame:
         raise FileNotFoundError(
             f"No se encontró el archivo para '{table_name}'.")
 
-    delimiter = ',' if table_name in delimiter_comma else '|'
+    delimiter = '|'
     quote_char = '"' if table_name in quote_char_double_quotes else None
 
     df = pl.read_csv(

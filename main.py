@@ -1,11 +1,22 @@
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+File:           main.py
+Author:         Antonio Arteaga
+Last Updated:   2025-02-03
+Version:        1.0
+Description:    DataFrames are obtained from CSV files, they are cleaned and 
+                transformed, finally, all DataFrames are loaded to SQL Server (ETL).
+Dependencies:   polars==1.37.1, openpyxl==3.1.5, xlsxwriter==3.2.9, spacy==3.8.11,
+Usage:          CSV files are requested to run this script.
+"""
 
 from pkg.extract import *
 from pkg.transform import *
 
 
 def main():
-    """E-T-L pipeline."""
+    """E-T-L process."""
     for table_name in TABLES_TO_PROCESS:
         print("\n" + "=" * 25)
         print(f"| 📊 Procesando Tabla: {table_name}")
@@ -25,8 +36,8 @@ def main():
                 print("\n\nNo puedo escribir en el excel si está abierto!")
 
             # 3. Load to SQL Server (L)
-            df = df.head(10)
-            index_load_table(df, f'{table_name}_clean')
+            # df = df.head(10)
+            # load_table(df, f'{table_name}_clean')
 
         except Exception as e:
             print(
@@ -34,7 +45,7 @@ def main():
             print(f"'{e}'")
             print("=" * 25)
 
-    print("\n--- PIPELINE COMPLETO FINALIZADO ---")
+    print("\n--- PROCESO FINALIZADO ---")
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+# config.py
 import os
 import urllib.parse
 from dotenv import load_dotenv

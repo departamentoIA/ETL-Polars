@@ -63,11 +63,9 @@ def transform(df: pl.DataFrame) -> pl.DataFrame:
     return df
 
 
-def index_load_table(df: pl.DataFrame, table_name: str) -> None:
-    """Sube el DataFrame usando SQLAlchemy y crea el índice."""
-
-    # 1. Crear el motor de SQLAlchemy
-    # fast_executemany=True es el secreto de la velocidad en SQL Server
+def load_table(df: pl.DataFrame, table_name: str) -> None:
+    """Load the DataFrame to SQL Server using SQLAlchemy."""
+    # fast_executemany=True to get more speed in SQL Server
     engine = create_engine(get_connection_string(), fast_executemany=True)
     print(f"Subiendo tabla {table_name} a SQL Server...")
     try:
