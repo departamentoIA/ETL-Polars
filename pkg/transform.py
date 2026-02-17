@@ -6,6 +6,14 @@ from sqlalchemy import create_engine
 from pkg.config import get_connection_string
 
 
+def rename_columns(table_name: str, df: pl.DataFrame, col_rename: str) -> pl.DataFrame:
+    """Rename specific columns from specific tables."""
+    if table_name in table_with_column_rename:
+        new_name = col_rename+"_MVFRMACTO"
+        return df.rename({col_rename: new_name})
+    return df
+
+
 def drop_columns(df: pl.DataFrame, cols: List[str]) -> pl.DataFrame:
     """Drop some columns."""
     colums = [c for c in cols if c in df.columns]
@@ -51,8 +59,10 @@ def to_cleaned_str(df: pl.DataFrame, columns: Iterable[str]) -> pl.DataFrame:
     )
 
 
-def transform(df: pl.DataFrame) -> pl.DataFrame:
-    """Drop some columns, apply cast and formating to the DataFrames."""
+def transform(df: pl.DataFrame, table_name: str) -> pl.DataFrame:
+    """Drop some columns, apply cast and formating to the DataFrames.
+    First, rename specific column to delete it."""
+    df = rename_columns(table_name, df, col_rename)
     df = drop_columns(df, col_drop)
     df = cast_columns(df, col_int32, pl.Int32)
     df = cast_columns(df, col_int8, pl.Int8)
@@ -61,21 +71,3 @@ def transform(df: pl.DataFrame) -> pl.DataFrame:
     print(f"DataFrame con {df.shape[0]} filas y {df.shape[1]} columnas")
     print(df.schema)
     return df
-
-
-def load_table(df: pl.DataFrame, table_name: str) -> None:
-    """Load the DataFrame to SQL Server using SQLAlchemy."""
-    # fast_executemany=True to get more speed in SQL Server
-    engine = create_engine(get_connection_string(), fast_executemany=True)
-    print(f"Subiendo tabla {table_name} a SQL Server...")
-    try:
-        # Polars detectará el motor de SQLAlchemy automáticamente
-        df.write_database(
-            table_name=table_name,
-            connection=engine,
-            if_table_exists="replace"  # If the tabla already exists, it fails
-        )
-        print(f"✓ Datos subidos exitosamente a {table_name}")
-
-    except Exception as e:
-        print(f"❌ Error: {e}")

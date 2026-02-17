@@ -13,6 +13,7 @@ Usage:          CSV files are requested to run this script.
 
 from pkg.extract import *
 from pkg.transform import *
+from pkg.load import *
 
 
 def main():
@@ -28,8 +29,8 @@ def main():
             # df_sample_raw.write_excel(f'{table_name}_sample_raw.xlsx')
             # """
             # 2. Transformation (T)
-            df_trans = transform(df)
-            df_sample = df_trans.sample(100, seed=42)
+            df_trans = transform(df, table_name)
+            df_sample = df_trans.sample(10, seed=42)
             try:
                 df_sample.write_excel(f'{table_name}_clean.xlsx')
             except:
