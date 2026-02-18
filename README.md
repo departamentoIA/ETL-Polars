@@ -1,9 +1,9 @@
-# ETL-Polars
+# ETL-SIGER
 ETL process with Polars. DataFrames (tables) are obtain from csv files.
 
 ## 🌎 Repository Structure
 ```
-ETL-Polars/
+ETL-SIGER/
 ├── main.py
 ├── .gitignore
 ├── env/                # Virtual enviroment (not provided)
@@ -26,7 +26,7 @@ ETL-Polars/
 ## 🚀 How to run locally
 1. Clone this repository:
 ```
-git clone https://github.com/departamentoIA/ETL-Polars.git
+git clone https://github.com/departamentoIA/ETL-SIGER.git
 ```
 2. Set virtual environment and install dependencies.
 
@@ -43,7 +43,7 @@ python -m venv env && source env/bin/activate && pip install -r requirements.txt
 3. Create your ".env" file, which has the following form:
 ```
 DB_SERVER=10.0.00.00,5000
-DB_NAME=SAT
+DB_NAME=My_DataBase
 DB_USER=caarteaga
 DB_PASSWORD=pa$$word
 ```

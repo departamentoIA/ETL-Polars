@@ -7,7 +7,7 @@ Last Updated:   2025-02-03
 Version:        1.0
 Description:    DataFrames are obtained from CSV files, they are cleaned and 
                 transformed, finally, all DataFrames are loaded to SQL Server (ETL).
-Dependencies:   polars==1.37.1, openpyxl==3.1.5, xlsxwriter==3.2.9, spacy==3.8.11,
+Dependencies:   polars==1.38.1, openpyxl==3.1.5, xlsxwriter==3.2.9, pyarrow==23.0.1,
 Usage:          CSV files are requested to run this script.
 """
 
@@ -37,7 +37,7 @@ def main():
                 print("\n\nNo puedo escribir en el excel si está abierto!")
 
             # 3. Load to SQL Server (L)
-            # load_table(df, f'{table_name}')
+            load_table(df_trans, f'{table_name}')
             # """
         except Exception as e:
             print(

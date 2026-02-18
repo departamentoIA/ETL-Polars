@@ -1,6 +1,5 @@
 # globals.py
 from pathlib import Path
-# import polars as pl
 from typing import Dict, List
 import polars as pl
 from pathlib import Path
@@ -66,10 +65,10 @@ col_int32 = [
     'LLINFFRMPRE', 'LLESTDOACTOPRE', 'LLMVFRMACTOSUB',
 ]
 
-# Columns 'Int8' type for all tables
-col_int8 = ['BOMORAL', 'BOACERVO', 'BOACTIVO', 'BOVARIABLERANGO', 'BOANOTACIONACTIVA',
-            'BOMIGRACION', 'BOINGRESO', 'BOINCIDENCIAS', 'BOPERNOSUBS', 'BOABREFOLIO',
-            'BOVISIBLE', 'BOESFEDATARIO']
+# Columns 'Boolean' type for all tables
+col_Boolean = ['BOMORAL', 'BOACERVO', 'BOACTIVO', 'BOVARIABLERANGO', 'BOANOTACIONACTIVA',
+               'BOMIGRACION', 'BOINGRESO', 'BOINCIDENCIAS', 'BOPERNOSUBS', 'BOABREFOLIO',
+               'BOVISIBLE', 'BOESFEDATARIO']
 
 # Columns 'DATE' type for all tables
 col_date = ['FCETAPA', 'FCAPERTURA', 'FCNACIMIENTO',
