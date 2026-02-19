@@ -30,18 +30,19 @@ def main():
             # """
             # 2. Transformation (T)
             df_trans = transform(df, table_name)
+            """
             df_sample = df_trans.sample(10, seed=42)
             try:
                 df_sample.write_excel(f'{table_name}_clean.xlsx')
             except:
                 print("\n\nNo puedo escribir en el excel si está abierto!")
-
+            """
             # 3. Load to SQL Server (L)
             load_table(df_trans, f'{table_name}')
             # """
         except Exception as e:
             print(
-                f"\n❌ FALLO CRÍTICO para {table_name}. Mensaje:\n")
+                f"\n❌ FALLO CRÍTICO para {table_name}.\n")
             print(f"'{e}'")
             print("=" * 25)
 

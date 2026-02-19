@@ -9,7 +9,7 @@ ROOT_PATH = Path(
     r"\\sia\AECF\DGATIC\LOTA\Bases de Datos\SIGER")
 
 TABLES_TO_PROCESS = [
-    'CTACTOS',
+    'CTSOCIOS',
     # 'BTSOLICITUDES', 'CFVARIABLES', 'CTACCION', 'CTACTOS', 'CTCONDONACIONES',
     # 'CTESTADOS', 'CTESTADOSACTO', 'CTESTATUS', 'CTESTATUSCARATULA',
     # 'CTESTATUSFEDA', 'CTFEDATARIOS', 'CTGIROS', 'CTMUNICIPIOS',
@@ -30,6 +30,9 @@ table_with_column_rename = ['MVFRMACTO']
 
 # Column to be renamed, "_MVFRMACTO" is added to the column name
 col_rename = 'DSACTO'
+
+# Columns with very long data
+LONG_TEXT_COLS = ['DSDOMICILIO']
 
 # Columns to be dropped
 col_drop = [
