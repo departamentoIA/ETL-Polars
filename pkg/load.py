@@ -3,6 +3,7 @@
 from pkg.globals import *
 from sqlalchemy import create_engine, text
 from pkg.config import get_connection_string
+import sqlalchemy
 
 
 def map_polars_to_sql(colname: str, dtype: pl.DataType):
@@ -39,6 +40,8 @@ def create_table_from_df(engine, table_name: str, df: pl.DataFrame,
     pk_sql = ""
     if primary_key:
         pk_sql = f", CONSTRAINT PK_{table_name} PRIMARY KEY ({primary_key})"
+    else:
+        print(f"No se crea Primary Key para la tabla '{table_name}'")
 
     create_sql = f"""
     IF OBJECT_ID(N'{full_name_for_object_id}', 'U') IS NOT NULL
@@ -56,7 +59,7 @@ def create_table_from_df(engine, table_name: str, df: pl.DataFrame,
 
 def load_table(df: pl.DataFrame, table_name: str,
                batch_rows: int = 100_000    # It should be lower than 200k
-               ) -> None:
+               ) -> sqlalchemy.engine.base.Engine:
     """Load the DataFrame to SQL Server by using SQLAlchemy."""
     # 'fast_executemany=True' is the secret to speed in SQL Server
     engine = create_engine(
@@ -82,11 +85,45 @@ def load_table(df: pl.DataFrame, table_name: str,
                 if_table_exists="append",
             )
             step += 1
-            if step == 5:
+            if step == 10:
                 print(
-                    f"✅ Filas completadas: {min(start + batch_rows, n):,} / {n:,}")
+                    f"✅ Filas completadas: {min(start + batch_rows, n):,} de {n:,}")
                 step = 0
-
+        print(f"✅ Tabla '{table_name}' subida correctamente.")
     except Exception as e:
         print(f"❌ Error cargando '{table_name}': {e}")
         raise
+
+    return engine
+
+
+def create_index(engine: sqlalchemy.engine.base.Engine, table_name: str,
+                 table_indexes: str) -> None:
+    """Create table index with SQL commands."""
+    index_col = table_indexes.get(table_name)
+    if index_col:
+        nombre_indice = f"IX_{table_name}_{index_col}"
+    else:
+        print(f"No se crea índice para la tabla '{table_name}'")
+        return
+
+    sql = text(f"""
+    IF NOT EXISTS (
+        SELECT 1
+        FROM sys.indexes i
+        JOIN sys.objects o ON i.object_id = o.object_id
+        JOIN sys.schemas s ON o.schema_id = s.schema_id
+        WHERE i.name = :idx_name
+          AND o.name = :tbl_name
+          AND s.name = 'dbo'
+    )
+    BEGIN
+        CREATE NONCLUSTERED INDEX [{nombre_indice}]
+        ON [dbo].[{table_name}] ([{index_col}] ASC);
+    END
+    """)
+
+    with engine.begin() as conn:
+        conn.execute(sql, {"idx_name": nombre_indice, "tbl_name": table_name})
+
+    print("Índice creado correctamente.")

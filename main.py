@@ -16,6 +16,15 @@ from pkg.transform import *
 from pkg.load import *
 
 
+def write_df_sample(df: pl.DataFrame, table_name: str, text: str, n_rows: int) -> None:
+    """Write an Excel file of n sample rows of the full DataFrame."""
+    df_sample = df.sample(n_rows, seed=42)
+    try:
+        df_sample.write_excel(f'{table_name}_{text}.xlsx')
+    except:
+        print("\n\nNo puedo escribir en el excel si está abierto!")
+
+
 def main():
     """E-T-L process."""
     for table_name in TABLES_TO_PROCESS:
@@ -25,21 +34,18 @@ def main():
         try:
             # 1. Extraction (E)
             df = extract_from_file(table_name, ROOT_PATH)
-            # df_sample_raw = df.sample(100, seed=42)
-            # df_sample_raw.write_excel(f'{table_name}_sample_raw.xlsx')
-            # """
+            # write_df_sample(df, table_name, "_raw", 10)
+
             # 2. Transformation (T)
             df_trans = transform(df, table_name)
-            """
-            df_sample = df_trans.sample(10, seed=42)
-            try:
-                df_sample.write_excel(f'{table_name}_clean.xlsx')
-            except:
-                print("\n\nNo puedo escribir en el excel si está abierto!")
-            """
+            # write_df_sample(df_trans, table_name, "_clean", 10)
+
             # 3. Load to SQL Server (L)
-            load_table(df_trans, f'{table_name}')
-            # """
+            engine_connection = load_table(df_trans, table_name)
+
+            # 4. Create table index
+            create_index(engine_connection, table_name, table_indexes)
+
         except Exception as e:
             print(
                 f"\n❌ FALLO CRÍTICO para {table_name}.\n")
