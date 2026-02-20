@@ -32,7 +32,6 @@ def create_table_from_df(engine, table_name: str, df: pl.DataFrame,
     full_name_for_object_id = f"dbo.{table_name}"
     full_name_bracket = f"[dbo].[{table_name}]"
     columns_sql = []
-
     for col, dtype in df.schema.items():
         sql_type = map_polars_to_sql(col, dtype)
         columns_sql.append(f"[{col}] {sql_type}")
@@ -52,7 +51,6 @@ def create_table_from_df(engine, table_name: str, df: pl.DataFrame,
         {pk_sql}
     );
     """
-
     with engine.begin() as conn:
         conn.execute(text(create_sql))
 

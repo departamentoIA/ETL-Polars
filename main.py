@@ -34,13 +34,13 @@ def main():
         try:
             # 1. Extraction (E)
             df = extract_from_file(table_name, ROOT_PATH)
-            # write_df_sample(df, table_name, "_raw", 10)
+            # write_df_sample(df, table_name, "raw", 10)
 
             # 2. Transformation (T)
             df_trans = transform(df, table_name)
-            # write_df_sample(df_trans, table_name, "_clean", 10)
+            # write_df_sample(df_trans, table_name, "clean", 10)
 
-            # 3. Load to SQL Server (L)
+            # 3. Load to SQL Server (L) and create primary key
             engine_connection = load_table(df_trans, table_name)
 
             # 4. Create table index

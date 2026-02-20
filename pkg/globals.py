@@ -9,7 +9,7 @@ ROOT_PATH = Path(
     r"\\sia\AECF\DGATIC\LOTA\Bases de Datos\SIGER")
 
 TABLES_TO_PROCESS = [
-    'CTUSUARIOS_202511281728', 'DTCOMPSOCIOS',
+    'PAGO_PORTAL'
     # 'BTSOLICITUDES', 'CFVARIABLES', 'CTACCION', 'CTACTOS', 'CTCONDONACIONES',
     # 'CTESTADOS', 'CTESTADOSACTO', 'CTESTATUS', 'CTESTATUSCARATULA',
     # 'CTESTATUSFEDA', 'CTFEDATARIOS', 'CTGIROS', 'CTMUNICIPIOS',
@@ -32,7 +32,7 @@ table_with_column_rename = ['MVFRMACTO']
 col_rename = 'DSACTO'
 
 # Columns with very long text
-LONG_TEXT_COLS = ['DSDOMICILIO']
+LONG_TEXT_COLS = ['DSDOMICILIO', 'DSOBJETO', 'DSDENSOCIAL', 'DSDIRECCION']
 
 # Columns to be dropped
 col_drop = [
@@ -56,7 +56,7 @@ col_drop = [
     'LLMUNICIPIOADS', 'LLETAPA', 'LLPAGODERECHO', 'LLTIPOFEDATARIO', 'LLUSOHORARIO',
     'LLPADRETIPSOC', 'LLESTATUSUSUA', 'LLINFFRMPRE', 'LLSOLFRMPRE', 'LLFORMAACTO',
     'LLMVFRMACTOSUB', 'LLESTDOACTOPRE', 'LLTIPOSOLICITUD', 'LLCOMPFEDA',
-    'LLESTATUSBANDEJA', 'LLPORTAL'
+    'LLESTATUSBANDEJA', 'LLPORTAL',
 ]
 
 # Columns 'Int32' type for all tables
@@ -115,7 +115,7 @@ primary_keys = {
     'MVFRMACTO': 'LLMVFRMACTO',
     'MVSOLICITUDES': 'LLSOLICITUD',
     'MVVARACTO': 'LLVARACTO',
-    'PAGO_PORTAL': 'LLPAGO'
+    # 'PAGO_PORTAL': 'LLPAGO', Not Primary Key
 }
 
 # Foreign keys of every table ('table': ['fk_table': 'fk_column'])
@@ -163,5 +163,5 @@ table_indexes = {'BTSOLICITUDES': 'LLBTSOLICITUD', 'CFVARIABLES': 'LLVARIABLE',
                  'CTUSUARIOS_202511281728': 'LLUSUARIO',
                  'DTCOMPSOCIOS': 'DSRFC', 'MVCARATULAS': 'DSRFC',
                  'MVFRMACTO': 'LLMVFRMACTO', 'MVSOLICITUDES': 'LLSOLICITUD',
-                 'MVVARACTO': 'LLVARACTO', 'PAGO_PORTAL': 'LLPAGO'
+                 'MVVARACTO': 'LLVARACTO'  # 'PAGO_PORTAL': 'LLPAGO' No index
                  }
